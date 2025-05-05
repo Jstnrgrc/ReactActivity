@@ -81,20 +81,25 @@ exports.updateUser = async(req, res) => {
 //============================================================================//
 //API for login user
 
-exports.login =(req, res) =>{
+exports.login = (req, res) => {
     const { Username, Password } = req.body;
-
-db.query("SELECT * FROM Students WHERE Username = ?",[Username], async (err, results) => {
-    if(err) return res.status(500).json({ message: err.message});
-    if(results.length===0) return res.status(401).json({ message: "Invalid Credentials"});
-
-    const user = results[0];
-    const isMatch = await bcrypt.compare(Password, user.Password);
-    if (!isMatch) return res.status(401).json({ message: "Invalid Credentials "});
-
-    const token = jwt.sign({ StudentID: user.StudentID}, process.env.JWT_SECRET, {expiresIn: "30m"});
-
-    res.status(200).json({ message: "Login Successful", token})
-    }
-);
-}
+  
+    db.query("SELECT * FROM Students WHERE Username = ?", [Username], async (err, results) => {
+      if (err) return res.status(500).json({ message: err.message });
+      if (results.length === 0) return res.status(401).json({ message: "Invalid Credentials" });
+  
+      const user = results[0];
+      console.log("Fullname from database:", user.Fullname); // Debugging
+  
+      const isMatch = await bcrypt.compare(Password, user.Password);
+      if (!isMatch) return res.status(401).json({ message: "Invalid Credentials" });
+  
+      const token = jwt.sign(
+        { StudentID: user.StudentID, Fullname: user.Fullname },
+        process.env.JWT_SECRET,
+        { expiresIn: "30m" }
+      );
+  
+      res.status(200).json({ message: "Login Successful", token });
+    });
+  };
