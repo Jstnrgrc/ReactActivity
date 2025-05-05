@@ -34,7 +34,7 @@ exports.viewUsers = (req,res) => {
 exports.viewUser = (req,res) => {
     const { SID } = req.params;
 
-    db.query("SELECT StudentID, Fullname, Email, Username from Students where StudentID = ?", [SID],
+    db.query("SELECT StudentID, FullName, Email, Username from Students where StudentID = ?", [SID],
         (err, results)  => {
             if(err) return res.status(500).json({ message: err.message });
             if(results.length === 0) return res.status(400).json({ message: "User not found!" });
@@ -89,13 +89,13 @@ exports.login = (req, res) => {
       if (results.length === 0) return res.status(401).json({ message: "Invalid Credentials" });
   
       const user = results[0];
-      console.log("Fullname from database:", user.Fullname); // Debugging
+      console.log("Email from database:", user.Email); // Debugging
   
       const isMatch = await bcrypt.compare(Password, user.Password);
       if (!isMatch) return res.status(401).json({ message: "Invalid Credentials" });
   
       const token = jwt.sign(
-        { StudentID: user.StudentID, Fullname: user.Fullname },
+        { StudentID: user.StudentID, Fullname: user.Fullname, Email: user.Email },
         process.env.JWT_SECRET,
         { expiresIn: "30m" }
       );

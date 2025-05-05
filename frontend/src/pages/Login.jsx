@@ -24,20 +24,21 @@ const handleChange = (e) =>{
 const handleLogin = async (e) => {
   e.preventDefault();
 
-  try{
+  try {
     const response = await axios.post('http://localhost:5000/api/users/login', formData);
-    localStorage.setItem('token', response.data.token);
-
     const decoded = jwtDecode(response.data.token);
-    localStorage.setItem('Fullname', decoded.Fullname);
     
-    navigate('/Dashboard/home')
+    console.log("Decoded token:", decoded); // Debugging
 
-  }catch(error){
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('Fullname', decoded.Fullname);
+    localStorage.setItem('Email', decoded.Email); // Ensure Email is stored
+
+    navigate('/Dashboard/home');
+  } catch (error) {
     alert(error.response?.data?.message || 'Something went wrong.');
   }
-
-}
+};
 
   return (
     <div className="bg-black min-h-screen flex items-center justify-center"
