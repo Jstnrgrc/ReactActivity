@@ -16,7 +16,7 @@ function Users() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 min-h-screen">
+    <div className="flex flex-col items-center justify-center bg-gray-100">
       <h1 className="text-4xl font-bold mb-4">Users</h1>
       <p className="text-lg text-gray-700 mb-8">Manage your users here!</p>
       <div className="overflow-x-auto w-full px-8">
@@ -35,8 +35,8 @@ function Users() {
                 key={user.UserID}
                 className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} // Alternating row colors
               >
-                <td className="py-3 px-6 text-sm text-gray-900">{user.UserID}</td>
-                <td className="py-3 px-6 text-sm text-gray-900">{user.Fullname}</td>
+                <td className="py-3 px-6 text-sm text-gray-900">{user.StudentID}</td>
+                <td className="py-3 px-6 text-sm text-gray-900">{user.FullName}</td>
                 <td className="py-3 px-6 text-sm text-gray-900">{user.Email}</td>
                 <td className="py-3 px-6 text-sm">
                   <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200">
